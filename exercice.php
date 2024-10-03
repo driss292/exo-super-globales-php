@@ -1,15 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+session_start();
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+// RESET SESSION
+if (isset($_GET["reset"])) {
+    session_destroy();
+    session_start();
+}
 
-<body>
-    <h1>Hello, World</h1>
+if (isset($_GET["first_name"])) {
+    $first_name = $_GET["first_name"];
+    $_SESSION["first_name"] = $first_name;
+} elseif (isset($_POST["first_name"]) && !empty($_POST["first_name"])) {
+    $first_name = $_POST["first_name"];
+    $_SESSION["first_name"] = $first_name;
+} elseif (isset($_SESSION["first_name"])) {
+    $first_name = $_SESSION["first_name"];
+} else {
+    $first_name = "Anonyme";
+};
 
-</body>
+/* ------ debug ------ */
 
-</html>
+// echo '<pre>';
+// echo "GET";
+// print_r($_GET);
+// echo "POST";
+// print_r($_POST);
+// echo "SESSION";
+// print_r($_SESSION);
+// echo '</pre>';
+
+/* ------ debug ------ */
+?>
+
+<h1>Bonjour , <?php echo $first_name; ?></h1>
+<form action="exercice.php" method="post">
+    <p>Votre nom : <input type="text" name="first_name" /></p>
+    <p><input type="submit" value="OK"></p>
+    <br>
+    <a href="exercice.php?reset=true">Reset la SESSION</a>
+</form>
